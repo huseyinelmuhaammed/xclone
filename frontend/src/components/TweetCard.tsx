@@ -32,11 +32,18 @@ export default function TweetCard({ tweet }: Props) {
   const [likes, setLikes] = useState<number>(tweet.like_count ?? 0);
   const [liked, setLiked] = useState(false);
 
+  const [error, setError] = useState<string | null>(null);
+
   async function handleLike() {
-    await likeTweet(tweet.tweet_id);
-    const data = await getLikes(tweet.tweet_id);
-    setLikes(data.like_count);
-    setLiked(true);
+    try {
+      await likeTweet(tweet.tweet_id);
+      const data = await getLikes(tweet.tweet_id);
+      setLikes(data.like_count);
+      setLiked(true);
+      setError(null);
+    } catch {
+      setError("Failed to like tweet");
+    }
   }
 
   return (
@@ -61,6 +68,7 @@ export default function TweetCard({ tweet }: Props) {
           >
             {liked ? "❤️" : "🤍"} {likes > 0 ? likes : ""}
           </button>
+          {error && <span style={{ color: "#f4212e", fontSize: 12, marginLeft: 8 }}>{error}</span>}
         </div>
       </div>
     </div>

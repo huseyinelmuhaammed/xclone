@@ -2,7 +2,6 @@ import os
 import time
 import logging
 from cassandra.cluster import Cluster
-from cassandra.auth import PlainTextAuthProvider
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +20,7 @@ def _connect_with_retry(max_retries: int = 30, delay: int = 5):
         except Exception as exc:  # noqa: BLE001
             logger.warning("ScyllaDB not ready (attempt %d/%d): %s", attempt, max_retries, exc)
             if attempt == max_retries:
+                cluster.shutdown()
                 raise
             time.sleep(delay)
 
