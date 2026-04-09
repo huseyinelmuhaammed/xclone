@@ -41,7 +41,7 @@ export default function TweetComposer({ onTweeted }: Props) {
           placeholder="What's happening?!"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          maxLength={300}
+          maxLength={280}
           rows={3}
         />
         <div className="composer-footer">

@@ -60,6 +60,7 @@ class FollowRequest(BaseModel):
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+MAX_TWEET_LENGTH = 280
 HASHTAG_RE = re.compile(r"#(\w+)", re.UNICODE)
 
 
@@ -137,7 +138,7 @@ def get_user(username: str):
 
 @app.post("/tweets", status_code=201)
 def create_tweet(req: TweetRequest):
-    if len(req.content) > 280:
+    if len(req.content) > MAX_TWEET_LENGTH:
         raise HTTPException(status_code=422, detail="Tweet exceeds 280 characters")
 
     db = session()
